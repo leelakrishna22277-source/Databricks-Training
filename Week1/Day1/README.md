@@ -22,26 +22,19 @@ Today I started learning SQL basics and practiced different types of queries usi
 
 * I understood how to group data using GROUP BY
 
-* I learned how to filter grouped data using HAVING clause
 
-* I practiced sorting data using ORDER BY in ascending and descending order
-
-* I understood how to use JOIN to combine data from multiple tables
-
-* I also learned the difference between INNER JOIN and LEFT JOIN
 
 ## Mistakes I Faced
 
 * I tried using aggregate functions in WHERE which is not correct
 * I used = NULL instead of IS NULL
 * I missed adding columns in GROUP BY
-* I made mistakes while using HAVING conditions
+
 
 ## Key Understanding
 
 * WHERE is used before grouping and HAVING is used after grouping
 * GROUP BY is important when using aggregate functions
-* Proper joins are required to combine related tables
 * Writing clean and readable queries is important
 
 ## Conclusion
