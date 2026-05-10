@@ -12,7 +12,7 @@
 -- HAVING QUERIES
 -- =========================================================
 
--- Query 1
+-- Query 26
 -- Find departments having more than 2 employees.
 
 SELECT e.department_id,
@@ -25,7 +25,7 @@ GROUP BY e.department_id, d.name
 HAVING COUNT(d.department_id) > 2;
 
 
--- Query 2
+-- Query 27
 -- Find departments where average salary is greater than 55000.
 
 SELECT e.department_id,
@@ -38,7 +38,7 @@ GROUP BY e.department_id, d.name
 HAVING avg_salary > 55000;
 
 
--- Query 3
+-- Query 28
 -- Find years where more than one employee was hired.
 
 SELECT YEAR(hire_date),
@@ -48,7 +48,7 @@ GROUP BY YEAR(hire_date)
 HAVING COUNT(hire_date) > 1;
 
 
--- Query 4
+-- Query 29
 -- Find departments where total salary is less than 100000.
 
 SELECT e.department_id,
@@ -61,7 +61,7 @@ GROUP BY e.department_id, d.name
 HAVING sum_salary < 100000;
 
 
--- Query 5
+-- Query 30
 -- Find departments where maximum salary is greater than 75000.
 
 SELECT e.department_id,
@@ -79,7 +79,7 @@ HAVING max_salary > 75000;
 -- ORDER BY QUERIES
 -- =========================================================
 
--- Query 6
+-- Query 31
 -- Display employee names and salaries in ascending salary order.
 
 SELECT name,
@@ -88,7 +88,7 @@ FROM Employee
 ORDER BY salary ASC;
 
 
--- Query 7
+-- Query 32
 -- Display employee names and ages in descending age order.
 
 SELECT name,
@@ -97,7 +97,7 @@ FROM Employee
 ORDER BY age DESC;
 
 
--- Query 8
+-- Query 33
 -- Display employee names and hire dates sorted by hire date.
 
 SELECT name,
@@ -106,7 +106,7 @@ FROM Employee
 ORDER BY hire_date ASC;
 
 
--- Query 9
+-- Query 34
 -- Display employees ordered by department and salary.
 
 SELECT name,
@@ -116,7 +116,7 @@ FROM Employee
 ORDER BY department_id, salary;
 
 
--- Query 10
+-- Query 35
 -- Display department-wise total salary ordered by total salary.
 
 SELECT e.department_id,
@@ -134,7 +134,7 @@ ORDER BY sum_salary;
 -- JOIN QUERIES
 -- =========================================================
 
--- Query 11
+-- Query 36
 -- Display employee names with department names.
 
 SELECT e.name,
@@ -144,7 +144,7 @@ JOIN Department d
 ON e.department_id = d.department_id;
 
 
--- Query 12
+-- Query 37
 -- Display project names with department names.
 
 SELECT p.name,
@@ -154,7 +154,7 @@ JOIN Department d
 ON p.department_id = d.department_id;
 
 
--- Query 13
+-- Query 38
 -- Display employee names and project names based on department.
 
 SELECT e.name,
@@ -164,7 +164,7 @@ JOIN Employee e
 ON p.department_id = e.department_id;
 
 
--- Query 14
+-- Query 39
 -- Display all employees with department names using LEFT JOIN.
 
 SELECT e.name,
@@ -174,7 +174,7 @@ LEFT JOIN Department d
 ON e.department_id = d.department_id;
 
 
--- Query 15
+-- Query 40
 -- Display all departments with employee names using RIGHT JOIN.
 
 SELECT e.name,
@@ -184,7 +184,7 @@ RIGHT JOIN Department d
 ON e.department_id = d.department_id;
 
 
--- Query 16
+-- Query 41
 -- Display employees who are not assigned to any project.
 
 SELECT e.name
@@ -194,7 +194,7 @@ ON e.department_id = p.department_id
 WHERE p.project_id IS NULL;
 
 
--- Query 17
+-- Query 42
 -- Display employee names with total project count.
 
 SELECT e.name,
@@ -205,7 +205,7 @@ ON e.department_id = p.department_id
 GROUP BY e.name;
 
 
--- Query 18
+-- Query 43
 -- Display departments without employees.
 
 SELECT d.name
@@ -215,7 +215,7 @@ ON e.department_id = d.department_id
 WHERE d.department_id IS NULL;
 
 
--- Query 19
+-- Query 44
 -- Find employees working in the same department as John Doe.
 
 SELECT e2.name
@@ -226,7 +226,7 @@ WHERE e1.name = 'John Doe'
 AND e2.name <> 'John Doe';
 
 
--- Query 20
+-- Query 45
 -- Display department-wise average salary.
 
 SELECT d.name,
@@ -242,7 +242,7 @@ GROUP BY d.name;
 -- NESTED QUERIES
 -- =========================================================
 
--- Query 21
+-- Query 46
 -- Find employee with highest salary.
 
 SELECT name,
@@ -254,7 +254,7 @@ WHERE salary = (
 );
 
 
--- Query 22
+-- Query 47
 -- Find employees whose salary is above average salary.
 
 SELECT *
@@ -265,7 +265,7 @@ WHERE salary > (
 );
 
 
--- Query 23
+-- Query 48
 -- Find employee with second highest salary.
 
 SELECT name,
@@ -279,7 +279,7 @@ ORDER BY salary DESC
 LIMIT 1;
 
 
--- Query 24
+-- Query 49
 -- Find department with the most employees.
 
 SELECT d.name,
@@ -295,7 +295,7 @@ HAVING COUNT(*) >= ALL (
 );
 
 
--- Query 25
+-- Query 50
 -- Find employees earning more than their department average salary.
 
 SELECT e.name,
@@ -316,7 +316,7 @@ WHERE e.salary > (
 );
 
 
--- Query 26
+-- Query 51
 -- Find the 3rd highest salary employee.
 
 SELECT e.name,
@@ -330,7 +330,7 @@ WHERE e.salary = (
 );
 
 
--- Query 27
+-- Query 52
 -- Find employees older than all HR employees.
 
 SELECT e.name,
@@ -345,7 +345,7 @@ WHERE e.age > ALL (
 );
 
 
--- Query 28
+-- Query 53
 -- Find departments where average salary is greater than 55000.
 
 SELECT *
@@ -360,7 +360,7 @@ FROM (
 WHERE avg_salary > 55000;
 
 
--- Query 29
+-- Query 54
 -- Find employees working in departments having at least 2 projects.
 
 SELECT *
@@ -375,7 +375,7 @@ FROM (
 WHERE totalproject_count >= 2;
 
 
--- Query 30
+-- Query 55
 -- Find employees hired on the same date as Jane Smith.
 
 SELECT e2.name
