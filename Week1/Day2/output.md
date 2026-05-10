@@ -1,5 +1,5 @@
 
-# Day 2 SQL Queries and Outputs (26–55)
+# Day 2 SQL Queries and Outputs (26–65)
 
 ## **Having Queries**
 
@@ -623,3 +623,240 @@ and e2.name <> 'Jane Smith';
 ```text
 No rows returned.
 ```
+# ADVANCED MODERATE DIFFICULTY QUERIES
+
+
+---
+
+# Query 56
+## Question:
+Select the total salary of employees hired in the year 2020.
+
+```sql
+select year(hire_date) as year_hired,sum(salary)
+from Employee1
+group by year_hired
+having year_hired=2020;
+```
+
+## Output:
+
+| year_hired | sum(salary) |
+|------------|-------------|
+| 2020 | 103000.00 |
+
+---
+
+# Query 57
+## Question:
+Select the average salary of employees in each department, ordered by the average salary in descending order.
+
+```sql
+select d.name,avg(e.salary) as avg_sal
+from Employee1 e
+join Department d
+on e.department_id=d.department_id
+group by d.name
+order by avg_sal desc;
+```
+
+## Output:
+
+| name | avg_sal |
+|------|--------------|
+| IT | 65000.000000 |
+| Marketing | 61500.000000 |
+| HR | 55000.000000 |
+| Finance | 50000.000000 |
+
+---
+
+# Query 58
+## Question:
+Select departments with more than 1 employee.
+
+```sql
+select d.name,count(*)
+from Employee1 e
+join Department d
+on e.department_id=d.department_id
+group by d.name
+having count(*)>1;
+```
+
+## Output:
+
+| name | count(*) |
+|------|----------|
+| IT | 3 |
+| HR | 2 |
+| Finance | 2 |
+| Marketing | 2 |
+
+---
+
+# Query 59
+## Question:
+Select employees hired in the last 2 years, ordered by their hire date.
+
+```sql
+select name,hire_date
+from Employee1
+where hire_date=Date_sub(current_Date,interval 2 year)
+order by hire_date;
+```
+
+## Output:
+
+_No rows returned._
+
+---
+
+# Query 60
+## Question:
+Select the total number of employees and average salary for departments with more than 2 employees.
+
+```sql
+select d.name,count(*) as emp_count,avg(e.salary)
+from Employee1 e
+join Department d
+on e.department_id=d.department_id
+group by d.name
+having emp_count>2;
+```
+
+## Output:
+
+| name | emp_count | avg(e.salary) |
+|------|-----------|---------------|
+| IT | 3 | 65000.000000 |
+
+---
+
+# Query 61
+## Question:
+Select the name and salary of employees whose salary is above the average salary of their department.
+
+```sql
+select d.name,e.name,e.salary
+from Employee1 e
+join Department d
+on e.department_id=d.department_id
+where e.salary>
+(
+select avg(salary)
+from Employee1
+where department_id=e.department_id
+);
+```
+
+## Output:
+
+| name | name | salary |
+|------|-------------|----------|
+| IT | Bob Brown | 80000.00 |
+| HR | Jane Smith | 60000.00 |
+| Finance | Eve Black | 55000.00 |
+| Marketing | David Green | 70000.00 |
+
+---
+
+# Query 62
+## Question:
+Select the names of employees who are hired on the same date as the oldest employee in the company.
+
+```sql
+select name,hire_date
+from Employee1 e
+where hire_date=
+(
+select min(hire_date)
+from Employee1
+);
+```
+
+## Output:
+
+| name | hire_date |
+|------|------------|
+| Bob Brown | 2018-02-12 |
+
+---
+
+# Query 63
+## Question:
+Select the department names along with the total number of projects they are working on, ordered by the number of projects.
+
+```sql
+select d.name,count(*)
+from Department d
+join Project p
+on d.department_id=p.department_id
+group by d.name
+order by count(*);
+```
+
+## Output:
+
+| name | count(*) |
+|------|----------|
+| HR | 1 |
+| Finance | 2 |
+| Marketing | 2 |
+| IT | 3 |
+
+---
+
+# Query 64
+## Question:
+Select the employee name with the highest salary in each department.
+
+```sql
+select d.name,e.name,e.salary
+from Employee1 e
+join Department d
+on e.department_id=d.department_id
+where e.salary=
+(
+select max(salary)
+from Employee1
+where department_id=e.department_id
+);
+```
+
+## Output:
+
+| name | name | salary |
+|------|-------------|----------|
+| IT | Bob Brown | 80000.00 |
+| HR | Jane Smith | 60000.00 |
+| Finance | Eve Black | 55000.00 |
+| Marketing | David Green | 70000.00 |
+
+---
+
+# Query 65
+## Question:
+Select the names and salaries of employees who are older than the average age of employees in their department.
+
+```sql
+select e.name,e.salary,e.age
+from Employee1 e
+where age>
+(
+select avg(age)
+from Employee1
+where department_id=e.department_id
+);
+```
+
+## Output:
+
+| name | salary | age |
+|-------------|----------|------|
+| Jane Smith | 60000.00 | 34 |
+| Bob Brown | 80000.00 | 45 |
+| David Green | 70000.00 | 38 |
+| Eve Black | 55000.00 | 40 |
+
+---
