@@ -1,5 +1,5 @@
 
-# Day 2 SQL Queries and Outputs (26–45)
+# Day 2 SQL Queries and Outputs (26–55)
 
 ## **Having Queries**
 
@@ -320,3 +320,306 @@ limit 1;
 |------|------------|
 | IT   | 65000.0    |
 
+# NESTED QUERIES
+
+---
+
+## Query 46
+
+### Question:
+Find employee with highest salary.
+
+```sql
+select name,salary 
+from Employee1 
+where salary=(
+    select max(salary)  
+    from Employee1
+);
+```
+
+### Output:
+
+```text
++-----------+----------+
+| name      | salary   |
++-----------+----------+
+| Bob Brown | 80000.00 |
++-----------+----------+
+```
+
+---
+
+## Query 47
+
+### Question:
+Find employees whose salary is above average salary.
+
+```sql
+select * 
+from Employee1 
+where salary>(
+    select avg(salary) 
+    from Employee1
+);
+```
+
+### Output:
+
+```text
++--------+-------------+------+----------+---------------+------------+
+| emp_id | name        | age  | salary   | department_id | hire_date  |
++--------+-------------+------+----------+---------------+------------+
+|      2 | Jane Smith  |   34 | 60000.00 |             2 | 2019-07-23 |
+|      3 | Bob Brown   |   45 | 80000.00 |             1 | 2018-02-12 |
+|      6 | David Green |   38 | 70000.00 |             4 | 2022-05-18 |
+|      9 | Grace Kelly |   27 | 65000.00 |             1 | 2018-11-13 |
++--------+-------------+------+----------+---------------+------------+
+```
+
+---
+
+## Query 48
+
+### Question:
+Find employee with second highest salary.
+
+```sql
+select name,salary 
+from Employee1 
+where salary<(
+    select max(salary)  
+    from Employee1
+) 
+order by salary desc 
+limit 1;
+```
+
+### Output:
+
+```text
++-------------+----------+
+| name        | salary   |
++-------------+----------+
+| David Green | 70000.00 |
++-------------+----------+
+```
+
+---
+
+## Query 49
+
+### Question:
+Find department with the most employees.
+
+```sql
+select d.name,count(*) 
+from Department d 
+join Employee1 e 
+on e.department_id=d.department_id
+group by d.name
+having count(*)>=All(
+    select count(*) 
+    from Employee1
+    group by department_id
+);
+```
+
+### Output:
+
+```text
++------+----------+
+| name | count(*) |
++------+----------+
+| IT   |        3 |
++------+----------+
+```
+
+---
+
+## Query 50
+
+### Question:
+Find employees earning more than their department average salary.
+
+```sql
+select e.name,
+       d.name,
+(
+     select avg(e2.salary)
+     from Employee1 e2
+     where e2.department_id=e.department_id
+) as avgDepsal,
+e.salary
+from Employee1 e 
+join Department d 
+on e.department_id=d.department_id
+where e.salary>(
+     select avg(e2.salary)
+     from Employee1 e2
+     where e2.department_id=e.department_id
+);
+```
+
+### Output:
+
+```text
++-------------+-----------+--------------+----------+
+| name        | name      | avgDepsal    | salary   |
++-------------+-----------+--------------+----------+
+| Bob Brown   | IT        | 65000.000000 | 80000.00 |
+| Jane Smith  | HR        | 55000.000000 | 60000.00 |
+| Eve Black   | Finance   | 50000.000000 | 55000.00 |
+| David Green | Marketing | 61500.000000 | 70000.00 |
++-------------+-----------+--------------+----------+
+```
+
+---
+
+## Query 51
+
+### Question:
+Find the 3rd highest salary employee.
+
+```sql
+select e.name,e.salary
+from Employee1 e 
+where e.salary=
+(
+      select distinct e2.salary 
+      from Employee1 e2
+      order by e2.salary desc 
+      limit 1 offset 2 
+);
+```
+
+### Output:
+
+```text
++-------------+----------+
+| name        | salary   |
++-------------+----------+
+| Grace Kelly | 65000.00 |
++-------------+----------+
+```
+
+---
+
+## Query 52
+
+### Question:
+Find employees older than all HR employees.
+
+```sql
+Select e.name,e.age 
+from Employee1 e
+where e.age >all
+(
+  select e2.age 
+  from Employee1 e2
+  join Department d 
+  on e2.department_id=d.department_id
+  where d.name='HR'
+);
+```
+
+### Output:
+
+```text
++-------------+------+
+| name        | age  |
++-------------+------+
+| Bob Brown   |   45 |
+| David Green |   38 |
+| Eve Black   |   40 |
++-------------+------+
+```
+
+---
+
+## Query 53
+
+### Question:
+Find departments where average salary is greater than 55000.
+
+```sql
+select *
+from (
+    select d.name,
+           AVG(e.salary) as avg_salary
+    from Employee1 e
+    join Department d
+    on e.department_id = d.department_id
+    group by d.name
+) dept_avg
+where avg_salary > 55000;
+```
+
+### Output:
+
+```text
++-----------+--------------+
+| name      | avg_salary   |
++-----------+--------------+
+| IT        | 65000.000000 |
+| Marketing | 61500.000000 |
++-----------+--------------+
+```
+
+---
+
+## Query 54
+
+### Question:
+Find employees working in departments having at least 2 projects.
+
+```sql
+select *
+from (
+    select e.name,
+           count(*) as totalproject_count
+    from Employee1 e 
+    join Project p 
+    on e.department_id=p.department_id
+    group by e.name
+) emp_proj_count
+where totalproject_count>=2;
+```
+
+### Output:
+
+```text
++-------------+--------------------+
+| name        | totalproject_count |
++-------------+--------------------+
+| John Doe    |                  3 |
+| Bob Brown   |                  3 |
+| Grace Kelly |                  3 |
+| Alice Blue  |                  2 |
+| Eve Black   |                  2 |
+| David Green |                  2 |
+| Hannah Lee  |                  2 |
++-------------+--------------------+
+```
+
+---
+
+## Query 55
+
+### Question:
+Find employees hired on the same date as Jane Smith.
+
+```sql
+select e2.name 
+from Employee1 e2
+join Employee1 e1 
+on e2.hire_date=e1.hire_date
+where e1.name='Jane Smith'
+and e2.name <> 'Jane Smith';
+```
+
+### Output:
+
+```text
+No rows returned.
+```
