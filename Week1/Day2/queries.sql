@@ -389,7 +389,7 @@ AND e2.name <> 'Jane Smith';
 -- Query 56
 -- Select the total salary of employees hired in the year 2020.
 
-select year(hire_date) as year_hired,sum(salary) from Employee1 group by year_hired;
+select year(hire_date) as year_hired,sum(salary) from Employee1 group by year_hired having year_hired=2020;
 
 
 -- Query 57
